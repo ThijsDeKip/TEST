@@ -1,1 +1,70 @@
+#include <stdio.h>
+#include <string.h>
+#define LENGTH 120
+
+void printArray(char array[], int length) {
+    for (int i = 0; i < length; i++) {
+        if (array[i] == '\0') {
+            printf("\\0");
+        } else if (array[i] == '\n') {
+            printf("\\n");
+        } else {
+            putchar(array[i]);
+        }
+    }
+    printf("\n");
+}
+
+// Function to insert a new name into the names array
+void insertName(char *startPos[], int *nrNames, char newName[]) {
+    // Copy the new name to the free space
+    strcpy(startPos[*nrNames], newName);
+
+    // Update startPos to point to the new free space
+    startPos[*nrNames + 1] = startPos[*nrNames] + strlen(newName) + 1;
+
+    // Increment the number of names
+    (*nrNames)++;
+}
+
+int main(void) {
+    char cmd;
+    char names[LENGTH] = { '\0' };
+    char *startPos[LENGTH];
+    int nrNames = 0;
+
+    startPos[0] = names;
+
+    do {
+        printf("Command? ");
+        scanf(" %c", &cmd);
+        switch (cmd) {
+            case 'i':
+                
+                char name[LENGTH];
+                if(nrNames < LENGTH){
+                printf("Name? ");
+                scanf(" %s", name);
+
+               if (strlen(name) >= LENGTH) {
+        printf("Not enough space left\n");
+    } else {
+        insertName(startPos, &nrNames, name);
+    }
+                }
+                break;
+            case 'p':
+                printArray(names, LENGTH);
+                break;
+            case 'q':
+                printf("Bye!\n");
+                break;
+            default:
+                printf("Unknown command '%c'\n", cmd);
+                break;
+        }
+    } while (cmd != 'q');
+
+    return 0;
+}
 
